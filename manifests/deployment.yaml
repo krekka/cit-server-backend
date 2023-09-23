@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cit-server-backend
+  namespace: bluk-hosting
+spec:
+  selector:
+    matchLabels:
+      app: cit-server-backend
+  template:
+    metadata:
+      labels:
+        app: cit-server-backend
+    spec:
+      containers:
+      - name: api
+        image: soglacen/cit-server-backend
+        volumeMounts:
+          - mountPath: "/pb_data"
+            name: data
+          - mountPath: "/assets"
+            name: assets
+        ports:
+        - name: entrypoint
+          containerPort: 8090
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: data
+        - name: assets
+          persistentVolumeClaim:
+            claimName: assets
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cit-server-backend
+  namespace: bluk-hosting
+spec:
+  selector:
+    app: cit-server-backend
+  ports:
+  - port: 80
+    name: entrypoint
+    targetPort: entrypoint

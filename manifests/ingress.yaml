@@ -1,0 +1,27 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: cit-server-backend
+  namespace: bluk-hosting
+spec:
+  entryPoints:
+  - web
+  - websecure
+  routes:
+    - match: Host(`apis.odzi.dog`) && PathPrefix(`/cit-server/v1`)
+      kind: Rule
+      services:
+        - name: cit-server-backend
+          port: "entrypoint"
+    - match: Host(`cit.playbox.network`)
+      kind: Rule
+      services:
+        - name: cit-server-backend
+          port: "entrypoint"
+    - match: Host(`cit-server-backend.k8s.odzi.dog`)
+      kind: Rule
+      services:
+        - name: cit-server-backend
+          port: "entrypoint"
+  tls:
+    certResolver: "cloudflare"
