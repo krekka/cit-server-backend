@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cit-server-backend
-  namespace: bluk-hosting
+  name: api
+  namespace: plx-cit-server
 spec:
   selector:
     matchLabels:
-      app: cit-server-backend
+      app: api
   template:
     metadata:
       labels:
-        app: cit-server-backend
+        app: api
     spec:
       containers:
       - name: api
@@ -35,11 +35,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: cit-server-backend
-  namespace: bluk-hosting
+  name: api
+  namespace: plx-cit-server
 spec:
   selector:
-    app: cit-server-backend
+    app: api
   ports:
   - port: 80
     name: entrypoint
